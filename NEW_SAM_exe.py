@@ -5,7 +5,7 @@ from SQL_TWM import QuerySQL
 class Execute_search ():
     def __init__(self):
         print('---------------- DADOS ----------------')
-        self.cliente = 'twm_localiza'
+        self.cliente = 'twm_fleury'
         self.mes_emissao = '202201'
         self.query = '''
                     SELECT  *
@@ -23,7 +23,6 @@ class Execute_search ():
                             AND conta.ic_aprovada=1 AND SUBSTRING(CONVERT(CHAR(8),dt_emissao,112),1,6)=
                 '''
 
-                            
     def query_sql_start (self):
         print('----------------- SQL -----------------')
         QuerySQL_start = QuerySQL()
@@ -48,6 +47,7 @@ class Execute_search ():
                                 'vl_total'      :   tabela_twm.tt_total_fatura[i]
                                     
                                 }
+                
                 print(self.sql_dict)
                 self.id_fatura = tabela_twm.nu_fatura_base[0]+'.pdf'
                 Execute_search_start.query_nosql_start()
@@ -68,8 +68,6 @@ class Execute_search ():
             print(query_results)
             
         
-        
-
 
 Execute_search_start = Execute_search()
 Execute_search_start.query_sql_start()
