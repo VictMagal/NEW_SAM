@@ -425,3 +425,43 @@ DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.rav
 DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "POST /databases/GED/queries?query-hash=-1257280713106023678 HTTP/1.1" 200 None
 DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
 DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "GET /databases/GED/attachments?id=GED&name=0152965091_201805.pdf HTTP/1.1" 404 0
+DEBUG:root:Executing query 'FROM @all_docs WHERE id = $p0' on index 'dynamic'
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "GET /topology?name=automacao-faturas HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "POST /databases/automacao-faturas/queries?query-hash=-7190770763131037831 HTTP/1.1" 200 None
+DEBUG:root:Executing query 'FROM @all_docs WHERE id = $p0' on index 'dynamic'
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "GET /topology?name=automacao-faturas HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "POST /databases/automacao-faturas/queries?query-hash=4663605239261085908 HTTP/1.1" 200 None
+DEBUG:root:Executing query 'FROM @all_docs WHERE id = $p0' on index 'dynamic'
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "GET /topology?name=automacao-faturas HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "POST /databases/automacao-faturas/queries?query-hash=4663605239261085908 HTTP/1.1" 200 None
+DEBUG:root:Executing query 'FROM @all_docs WHERE file_name = $p0' on index 'dynamic'
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "GET /topology?name=automacao-faturas HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "POST /databases/automacao-faturas/queries?query-hash=-8097784889361942442 HTTP/1.1" 200 None
+DEBUG:root:Executing query 'FROM @all_docs WHERE file_name = $p0' on index 'dynamic'
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "GET /topology?name=automacao-faturas HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "POST /databases/automacao-faturas/queries?query-hash=-9076141719414037180 HTTP/1.1" 200 None
+DEBUG:root:Executing query 'FROM @all_docs WHERE file_name = $p0' on index 'dynamic'
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "GET /topology?name=automacao-faturas HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "POST /databases/automacao-faturas/queries?query-hash=-9076141719414037180 HTTP/1.1" 200 None
+DEBUG:root:Executing query 'FROM @all_docs WHERE file_name = $p0' on index 'dynamic'
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "GET /topology?name=automacao-faturas HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "POST /databases/automacao-faturas/queries?query-hash=-9076141719414037180 HTTP/1.1" 200 None
+DEBUG:root:Executing query 'FROM @all_docs WHERE file_name = $p0' on index 'dynamic'
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "GET /topology?name=automacao-faturas HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "POST /databases/automacao-faturas/queries?query-hash=-9076141719414037180 HTTP/1.1" 200 None

@@ -9,9 +9,9 @@ class QueryNOSQL():
         self.store =  document_store.DocumentStore(urls=urls, database="automacao-faturas", certificate=cert)
         self.store.initialize()
           
-    def query (self, id_fatura):
+    def query (self, nu_fatura_base):
         # Query procurando pelo índice do banco Ex: where(informar no nome da coluna no banco, informar o valor procurado).
         with self.store.open_session() as session:
-            query_results = list(session.query().where(id = id_fatura))
+            query_results = list(session.query().where(file_name = nu_fatura_base))
             return query_results        
             
