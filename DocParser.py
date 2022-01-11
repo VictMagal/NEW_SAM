@@ -9,8 +9,8 @@ result = parser.ping()
 print(result)
 parsers = parser.list_parsers()
 
-print(type(parsers))
-print(len(parsers))
+# print(type(parsers))
+# print(len(parsers))
 
 list_energia = []
 for i in range(len(parsers)):
@@ -23,7 +23,6 @@ for i in range(len(parsers)):
 print(list_energia)        
 print(len(list_energia))
 
-path = 'TESTE_TESTE_TESTE_3011020234_20220122.pdf'
 fornecedor = 'Energia_Cemig'
 
 layouts = parsers.list_parser_model_layouts(fornecedor)
@@ -31,6 +30,9 @@ layouts = parsers.list_parser_model_layouts(fornecedor)
 print(layouts)
 print(len(layouts))
 
+
+
+#path = 'TESTE_TESTE_TESTE_3011020234_20220122.pdf'
 #id = parser.upload_file_by_path(path, fornecedor) #args: file to upload, the name of the parser
 # Note that "fileone.pdf" was in the current working directory
 

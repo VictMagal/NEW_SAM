@@ -20,13 +20,26 @@ class QuerySQL():
 
 
 
-
+query = 'SELECT * FROM dbo.t_fatura_base fatura,' \
+                     'INNER JOIN dbo.t_conta_aglutinada_base conta ON conta.id_conta_aglutinada_base = fatura.id_conta_aglutinada_base' \
+                     'INNER JOIN dbo.t_tipo_conta tipo_conta ON tipo_conta.id_tipo_conta = conta.id_tipo_conta' \ 
+                     'INNER JOIN dbo.t_vertical vertical ON vertical.id_vertical = tipo_conta.id_vertical' \
+                    'LEFT JOIN dbo.t_valor_fatura valor_fatura ON valor_fatura.id_fatura = fatura.id_fatura_base AND valor_fatura.id_campo_fatura = 4,' \
+                    'WHERE   ( valor_fatura.dc_valor_fatura = Não' \
+                    'OR valor_fatura.dc_valor_fatura IS NULL)' \
+                    'AND tipo_conta.id_vertical = 2' \
+                    'AND conta.ic_aprovada=1 AND SUBSTRING(CONVERT(CHAR(8),dt_emissao,112),1,6) = 202201'
 
 
 
 QuerySQL_start = QuerySQL()
 QuerySQL_start.setUp('twm_localiza')
-QuerySQL_start.query(r"SELECT * FROM dbo.t_fatura_base fatura WHERE valor_fatura.dc_valor_fatura = 'Não'")
+QuerySQL_start.query(query)
+
+
+
+
+
 
 
 '-------------------------------------------------------------------------------------------------------------------------'

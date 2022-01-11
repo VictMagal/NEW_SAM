@@ -409,3 +409,19 @@ DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.rav
 DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "POST /databases/GED/queries?query-hash=-1257280713106023678 HTTP/1.1" 200 None
 DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
 DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "GET /databases/GED/attachments?id=GED&name=0152965091_201805.pdf HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.docparser.com:443
+DEBUG:urllib3.connectionpool:https://api.docparser.com:443 "GET /v1/ping HTTP/1.1" 200 14
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.docparser.com:443
+DEBUG:urllib3.connectionpool:https://api.docparser.com:443 "GET /v1/parsers HTTP/1.1" 200 None
+DEBUG:root:Executing query 'FROM @all_docs WHERE id = $p0' on index 'dynamic'
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "GET /topology?name=automacao-faturas HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "POST /databases/automacao-faturas/queries?query-hash=473209159356205508 HTTP/1.1" 200 None
+DEBUG:root:Executing query 'FROM @all_docs WHERE Name = $p0' on index 'dynamic'
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "GET /topology?name=GED HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "POST /databases/GED/queries?query-hash=-1257280713106023678 HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): a.rdbguiando.ravendb.community:443
+DEBUG:urllib3.connectionpool:https://a.rdbguiando.ravendb.community:443 "GET /databases/GED/attachments?id=GED&name=0152965091_201805.pdf HTTP/1.1" 404 0
