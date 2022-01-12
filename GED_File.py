@@ -10,31 +10,35 @@ class Query():
         self.store =  document_store.DocumentStore(urls=urls, database="GED", certificate=cert)
         self.store.initialize()
           
+        
+        
+        
+        
+        
     def query_where (self, Name_fatura):
         with self.store.open_session() as session:
-            query_results = list(session.query().where(Name = Name_fatura))
+            query_results = list(session.query().where(Id = Name_fatura))
             return query_results        
         
         
     def get_attachmentoperation(self, entity_or_document_id, name):
         operation = GetAttachmentOperation(entity_or_document_id, name, AttachmentType.document, None)
-        
-        print(operation, type(operation))
-        print('-------')
-       # print(operation.Name)
         return self.store.operations.send(operation)
-            
     
     
+    
+    
+    
+    
+    
+    
+fatura = "GEDFileDocuments/3-A"
     
 Query_active = Query()
 Query_active.setUp()
-query_results = Query_active.query_where('0152965091_201805.pdf')
+query_results = Query_active.query_where(fatura)
 
-
-
-Query_active.get_attachmentoperation("GED", '0152965091_201805.pdf')
-
+Query_active.get_attachmentoperation("GED", fatura)
 
 # print(query_results[0])
 # print(len(query_results))
