@@ -1,10 +1,10 @@
 import pyodbc 
 import pandas as pd
 
-print('XXXXXXX... SQL_TWM...XXXXXXXXXXXXX')
 class QuerySQL():
-    def setUp (self, database):
+    def setUpsql (self, database):
         # Configurações de acesso ao SQL twm da guiabdo
+        print('XXXXXXX... SQL...XXXXXXXXX')
         server = '177.70.121.163' 
         username = 'u_victor_magalhaes' 
         password = 'Vi@haha270596' 
