@@ -6,13 +6,25 @@ import json
 from json import dumps
 import pandas as pd
 import pickle
-import openpyxl
+from openpyxl import Workbook
 
 class Execute_search ():
     def __init__(self):
         print('---------------- DADOS ----------------')
-        self.cliente = 'twm_localiza'
+        self.twm_cliente = 'twm_localiza'
         self.mes_emissao = '202201'
+        
+        if self.twm_cliente == 'twm_localiza':
+            self.cliente = 'LOCALIZA'
+        elif self.twm_cliente == 'twm_riachuelo':
+            self.cliente = 'RIACHUELO'
+        elif self.twm_cliente == 'twm_fleury':
+            self.cliente = 'FLEURY'
+        elif self.twm_cliente == 'twm_puc':
+            self.cliente = 'PUC'
+        else:
+            print('cliente não identificado: Dados iniciais')
+        
         print(self.cliente)
         print(self.mes_emissao)
         
@@ -56,7 +68,7 @@ class Execute_search ():
     def query_sql_start (self):
         print('----------------- SQL -----------------')
         QuerySQL_start = QuerySQL()
-        QuerySQL_start.setUpsql(self.cliente)
+        QuerySQL_start.setUpsql(self.twm_cliente)
         tabela_twm = QuerySQL_start.query(self.query_dbo_t_fatura_base.replace('valor_data', self.mes_emissao))
         
         if len(tabela_twm.index) == 0:
@@ -119,6 +131,7 @@ class Execute_search ():
             print('soma_valores_auditoria = ', soma_valores_auditoria)
         
         self.json_parseado = query_results[0]
+        self.json_parseado = json.loads(json.dumps(self.json_parseado.__dict__, ensure_ascii=False))
         
     def query_GED_start (self):
         print('---------------- GED ----------------')   
@@ -133,24 +146,7 @@ class Execute_search ():
         bytes = pickle.dumps(teste)
         print(bytes)
         
-    def json_parser_to_csv(self):
-        self.json_parseado = json.dumps(self.json_parseado.__dict__)
-        self.json_parseado = json.loads(self.json_parseado)
-        
-        consolidado_json = []
-        consolidado_pandas = []
-        consolidado_csv = []
-        
-        print(pd.DataFrame.from_dict(self.json_parseado, orient='index'))
-        
-    def col_parser_to_col_consolidado(self, cliente, json_parseado):
-        
-        json_localiza = []
-        json_riachuelo = []
-        json_fleury = []
-        json_puc = []
-       
-        
+    def linkado_excel (self): 
         wb = openpyxl.load_workbook('arquivo_linkado.xlsx')
         ws = wb['Worksheet']
         
@@ -172,14 +168,17 @@ class Execute_search ():
             list_localiza1.append(data)
             data =  ws.cell (row = count_row_twm, column = 2).value
             list_localiza2.append(data)
+            
             data =  ws.cell (row = count_row_twm, column = 3).value
             list_fleury1.append(data)
             data =  ws.cell (row = count_row_twm, column = 4).value
             list_fleury2.append(data)
+            
             data =  ws.cell (row = count_row_twm, column = 5).value
             list_riachuelo1.append(data)
             data =  ws.cell (row = count_row_twm, column = 6).value
             list_riachuelo2.append(data)
+            
             data =  ws.cell (row = count_row_twm, column = 7).value
             list_puc1.append(data)
             data =  ws.cell (row = count_row_twm, column = 8).value
@@ -190,31 +189,79 @@ class Execute_search ():
                 
         count_row_twm -=1
         count_row_twm = count_row_twm     
-        
-        
-        print(count_row_twm)
-        
-        print(list_localiza1)
-        print(list_localiza2)
-        print(list_puc2)
-        
-        #CRIAR DICT DAS LISTAS E FÉ
-        
-
-
-
-
-
        
+        
+        
+    def col_parser_to_col_consolidado(self):
+        print('--------------parser_to_linkado ----------------')
+        # Informações do linkado (Consultoria)
+        list_localiza_parser = ['Dc_identificador_conta', 'Dt_vencimento', 'Vl_total', 'Dc_razao_social', 'Dc_identificador_pessoa_juridica', 'Dc_razao_social_cliente', 'Dc_identificador_pessoa_juridica_cliente', 'Dc_endereco_cliente', 'Dt_leitura_anterior', 'Dt_leitura_atual', 'Unidade_medida', 'Dt_mes_referencia', 'Vl_base_calculo_icms', 'Vl_valor_icms', 'Vl_aliquota_icms', 'Vl_base_calculo_pis_pasep', 'Vl_valor_pis_pasep', 'Vl_aliquota_pis_pasep', 'Vl_base_calculo_cofins', 'Vl_aliquota_cofins', 'Vl_valor_cofins', 'Dc_classe', 'Dc_subclasse', 'Valores_faturados_auditoria Descricao', 'Valores_faturados_auditoria Quantidade', 'Valores_faturados_auditoria Tarifa Preco', 'Valores_faturados_auditoria Valor', 'Valores_faturados_auditoria Faturado', 'Dc_modalidade_tarifaria', 'Dc_grupo_tensao', 'Dc_subgrupo_tensao', 'Vl_tensao_nominal', 'Vl_tensao_contratada', 'Dc_limites_tensao', 'Fator_carga Hora Ponta', 'Fator_carga Hora Fora Ponta', 'Energia_reativa Hfp/único', 'Energia_reativa Hora Ponta', 'Energia_reativa Reservado', 'twm_Fornecedor', 'twm_Identificador', 'twm_Categoria', 'twm_Subcategoria', 'twm_Data de emissão', 'twm_Status', 'twm_Nota fiscal', 'twm_Localidade', 'twm_Sigla', 'twm_Regional']
+        list_localiza_dash = ['Nº da Conta', 'Vencimento', 'Valor total', 'Razão social fornecedor', 'CNPJ Fornecedor', 'Razão social Cliente', 'CNPJ cliente', 'Endereço cliente', 'Data leitura anterior', 'Data leitura atual', 'Unidade medida', 'Mês referência', 'Base de cálculo ICMS', 'Valor ICMS', 'Alíquota ICMS', 'Base de cálculo PIS/PASEP', 'Valor PIS/PASEP', 'Alíquota PIS/PASEP', 'Base de cálculo COFINS', 'Alíquota COFINS', 'Valor COFINS', 'Classe', 'Subclasse', 'Descrição Serviço', 'Consumo', 'Tarifa com imposto', 'Valor do Serviço', 'Faturado', 'Modalidade tarifária', 'Grupo tensão', 'Subgrupo tensão', 'Tensão nominal', 'Tensão contratada', 'Limites tensão', 'Carga Hora Ponta', 'Carga Hora Fora Ponta', 'Energia Reativa Hfp/unico', 'Energia Reativa Hora Ponta', 'Energia Reativa Reservado', 'Fornecedor', 'Identificador', 'Categoria', 'Subcategoria', 'Data de emissão', 'Status', 'Nota fiscal', 'Localidade', 'Sigla', 'Regional']
+        
+        list_riachuelo_parser = ['Dc_identificador_conta', 'Dt_vencimento', 'Vl_total', 'Dc_razao_social', 'Dc_identificador_pessoa_juridica', 'Dc_razao_social_cliente', 'Dc_identificador_pessoa_juridica_cliente', 'Dc_endereco_cliente', 'Vl_base_calculo_icms', 'Dt_leitura_anterior', 'Unidade_medida', 'Dt_mes_referencia', 'Vl_aliquota_icms', 'Dt_leitura_atual', 'Vl_valor_icms', 'Vl_base_calculo_pis_pasep', 'Vl_aliquota_pis_pasep', 'Vl_valor_pis_pasep', 'Vl_base_calculo_cofins', 'Vl_aliquota_cofins', 'Vl_valor_cofins', 'Dc_classe', 'Dc_subclasse', 'Valores_faturados_auditoria Descricao', 'Valores_faturados_auditoria Quantidade', 'Valores_faturados_auditoria Tarifa Preco', 'Valores_faturados_auditoria Valor', 'Valores_faturados_auditoria Faturado', 'Dc_modalidade_tarifaria', 'Dc_grupo_tensao', 'Dc_subgrupo_tensao', 'Vl_tensao_nominal', 'Vl_tensao_contratada', 'Dc_limites_tensao', 'Energia_reativa Hfp/único', 'Energia_reativa Hora Ponta', 'Energia_reativa Reservado', 'Fator_carga Hora Ponta', 'Fator_carga Hora Fora Ponta', 'twm_Concessionária', 'twm_Identificador', 'twm_Categoria', 'twm_Subcategoria', 'twm_Data de emissão', 'twm_Localidade', 'twm_Status', 'twm_Cód. Filial', 'twm_AVB', 'twm_Nota fiscal'] 
+        list_riachuelo_dash = ['Nº da Conta', 'Vencimento', 'Valor total', 'Razão social fornecedor', 'CNPJ Fornecedor', 'Razão social Cliente', 'CNPJ cliente', 'Endereço cliente', 'Base de cálculo ICMS', 'Data leitura anterior', 'Unidade medida', 'Mês referência', 'Alíquota ICMS', 'Data leitura atual', 'Valor ICMS', 'Base de cálculo PIS/PASEP', 'Alíquota PIS/PASEP', 'Valor PIS/PASEP', 'Base de cálculo COFINS', 'Alíquota COFINS', 'Valor COFINS', 'Classe', 'Subclasse', 'Descrição Serviço', 'Quantidade', 'Tarifa com imposto', 'Valor do Serviço', 'Faturado', 'Modalidade tarifária', 'Grupo tensão', 'Subgrupo tensão', 'Tensão nominal', 'Tensão contratada', 'Limites tensão', 'Carga Hora Ponta', 'Carga Hora Fora Ponta', 'Energia Reativa Hfp/unico', 'Energia Reativa Hora Ponta', 'Energia Reativa Reservado', 'Concessionária', 'Identificador', 'Categoria', 'Subcategoria', 'Data de emissão', 'Localidade', 'Status', 'Cód. Filial', 'AVB', 'Nota fiscal']
+        
+        list_fleury_parser = ['Nome_fornecedor', 'Dc_identificador_conta', 'Dt_vencimento', 'Vl_total', 'Dc_razao_social', 'Dc_identificador_pessoa_juridica', 'Dc_razao_social_cliente', 'Dc_identificador_pessoa_juridica_cliente', 'Dc_endereco_cliente', 'Vl_base_calculo_icms', 'Dt_leitura_anterior', 'Unidade_medida', 'Dt_mes_referencia', 'Vl_aliquota_icms', 'Dt_leitura_atual', 'Vl_valor_icms', 'Vl_base_calculo_pis_pasep', 'Vl_aliquota_pis_pasep', 'Vl_valor_pis_pasep', 'Vl_base_calculo_cofins', 'Vl_aliquota_cofins', 'Vl_valor_cofins', 'Dc_classe', 'Dc_subclasse', 'Valores_faturados_auditoria Descricao', 'Valores_faturados_auditoria Quantidade', 'Valores_faturados_auditoria Valor', 'Valores_faturados_auditoria Tarifa Preco', 'Dc_modalidade_tarifaria', 'Dc_grupo_tensao', 'Dc_subgrupo_tensao', 'Vl_tensao_nominal', 'Vl_tensao_contratada', 'Dc_limites_tensao', 'None', 'None', 'None', 'None', 'None', 'None', 'twm_Identificador', 'twm_Categoria', 'twm_Data de emissão', 'twm_Localidade', 'twm_Status', 'twm_Cód. Filial', 'twm_Mês', 'twm_Subcategoria', None]
+        list_fleury_dash = ['Concessionária', 'Nº da Conta', 'Vencimento', 'Valor total', 'Razão social fornecedor', 'CNPJ Fornecedor', 'Razão social Cliente', 'CNPJ cliente', 'Endereço cliente', 'Base de cálculo ICMS', 'Data leitura anterior', 'Unidade medida', 'Mês referência', 'Alíquota ICMS', 'Data leitura atual', 'Valor ICMS', 'Base de cálculo PASEP', 'Alíquota PASEP', 'Valor PASEP', 'Base de cálculo COFINS', 'Alíquota COFINS', 'Valor COFINS', 'Classe', 'Subclasse', 'Descrição Serviço', 'Consumo Faturado', 'Valor do Serviço', 'Tarifa com imposto', 'Modalidade tarifária', 'Grupo tensão', 'Subgrupo tensão', 'Tensão Nominal', 'Tensão contratada', 'Limites tensão', 'Demanda Contratada ponta', 'Demanda registrada ponta', 'Demanda Contratada fora ponta', 'Demanda registrada fora ponta', 'Consumo ponta', 'Consumo fora ponta', 'Identificador', 'Categoria', 'Data de emissão', 'Localidade', 'Status', 'Cód. Filial', 'Mês', 'Subcategoria', None]
+        
+        list_puc_parser = ['Dc_identificador_conta', 'Dt_vencimento', 'Vl_total', 'Dc_razao_social', 'Dc_identificador_pessoa_juridica', 'Dc_razao_social_cliente', 'Dc_identificador_pessoa_juridica_cliente', 'Dc_endereco_cliente', 'Vl_base_calculo_icms', 'Dt_leitura_anterior', 'Unidade_medida', 'Dt_mes_referencia', 'Vl_aliquota_icms', 'Dt_leitura_atual', 'Vl_valor_icms', 'Vl_base_calculo_pis_pasep', 'Vl_aliquota_pis_pasep', 'Vl_valor_pis_pasep', 'Vl_base_calculo_cofins', 'Vl_aliquota_cofins', 'Vl_valor_cofins', 'Dc_classe', 'Dc_subclasse', 'Valores_faturados_auditoria Descricao', 'Valores_faturados_auditoria Quantidade', 'Valores_faturados_auditoria Valor', 'Valores_faturados_auditoria Faturado', 'Valores_faturados_auditoria Tarifa Preco', 'Dc_modalidade_tarifaria', 'Dc_grupo_tensao', 'Dc_subgrupo_tensao', 'Vl_tensao_nominal', 'Vl_tensao_contratada', 'Dc_limites_tensao', 'Energia_reativa Reservado', 'Fator_carga Hora Ponta', 'Fator_carga Hora Fora Ponta', 'Energia_reativa Hfp/único', 'Energia_reativa Hora Ponta', 'twm_Fornecedor', 'twm_Identificador', 'twm_Categoria', 'twm_Subcategoria', 'twm_Localidade', 'twm_Metro Quadrado', 'twm_Alunos', 'twm_Data de emissão', 'twm_GRUPO', None]
+        list_puc_dash = ['Nº da Conta', 'Vencimento', 'Valor total', 'Razão social fornecedor', 'CNPJ Fornecedor', 'Razão social Cliente', 'CNPJ cliente', 'Endereço cliente', 'Base de cálculo ICMS', 'Data leitura anterior', 'Unidade medida', 'Mês referência', 'Alíquota ICMS', 'Data leitura atual', 'Valor ICMS', 'Base de cálculo PIS/PASEP', 'Alíquota PIS/PASEP', 'Valor PIS/PASEP', 'Base de cálculo COFINS', 'Alíquota COFINS', 'Valor COFINS', 'Classe', 'Subclasse', 'Descrição Serviço', 'Quantidade', 'Tarifa com imposto', 'Valor do Serviço', 'Faturado', 'Modalidade tarifária', 'Grupo tensão', 'Subgrupo tensão', 'Tensão nominal', 'Tensão contratada', 'Limites tensão', 'Energia Reativa Hfp/unico', 'Energia Reativa Hora Ponta', 'Energia Reativa Reservado', 'Carga Hora Ponta', 'Carga Hora Fora Ponta', 'Fornecedor', 'Identificador', 'Categoria', 'Subcategoria', 'Localidade', 'Metro Quadrado', 'Alunos', 'Data de emissão', 'GRUPO', None]
+        
+        #CRIAR DICT DAS LISTAS LINKADO
+        self.linkado_localiza = json.loads(dumps(dict(zip(list_localiza_parser, list_localiza_dash)), ensure_ascii=False))
+        self.linkado_riachuelo = json.loads(dumps(dict(zip(list_riachuelo_parser, list_riachuelo_dash)), ensure_ascii=False))
+        self.linkado_fleury = json.loads(dumps(dict(zip(list_fleury_parser, list_fleury_dash)), ensure_ascii=False))
+        self.linkado_puc = json.loads(dumps(dict(zip(list_puc_parser, list_puc_dash)), ensure_ascii=False))
+        
+        #Escolher o arquivo utilizado de acordo com o cliente
+        print(self.cliente)
+        if self.cliente == 'LOCALIZA':
+            self.json_linkado = self.linkado_localiza
+        elif self.cliente == 'RIACHUELO':
+            self.json_linkado = self.linkado_riachuelo
+        elif self.cliente == 'FLEURY':
+            self.json_linkado = self.linkado_fleury
+        elif self.cliente == 'PUC':
+            self.json_linkado = self.linkado_puc
+        else:
+            print('Erro ao identificar cliente linkado.')
+            
+        #Comparar linkado com parserado e gerar o consolidado final do Json do Dash            
+        list_indice_consolidado = []
+        list_valor_consolidado = []
+
+        for indice_linkado in self.json_linkado: 
+            valor_linkado = self.json_linkado[indice_linkado]
+            list_indice_consolidado.append(valor_linkado)
+            
+            valor_linkado = self.json_parseado.get(indice_linkado.lower(), 'N/D')
+            list_valor_consolidado.append(valor_linkado)
+            
+        #Consolidado final (dashboard)
+        self.json_consolidado = json.loads(dumps(dict(zip(list_indice_consolidado, list_valor_consolidado)), ensure_ascii=False))
+        
+        
+    def json_parser_to_csv(self):
+        print('--------------parser_to_csv ----------------')
+        print(self.json_consolidado, len(self.json_consolidado))
+        
+        #Transforma Json consolidado em Arquivo DataFrame
+        data_items = self.json_consolidado.items()
+        data_list = list(data_items)
+        df = pd.DataFrame(data_list)
+        print(df)
     
+        #Salva o arquivo em um Excel na pasta do código
+        #df.to_excel("Consolidado_"+ self.cliente+".xlsx", sheet_name="Plan1")
+        
     
     
 Execute_search_start = Execute_search()
 Execute_search_start.query_sql_start()
 Execute_search_start.query_GED_start()
 Execute_search_start.query_nosql_start()
+Execute_search_start.col_parser_to_col_consolidado()
 Execute_search_start.json_parser_to_csv()
-Execute_search_start.col_parser_to_col_consolidado(None,None)
 
 
 
