@@ -15,11 +15,20 @@ class QueryNOSQL():
         with self.store.open_session() as session:
 
             
-            #query_identificador = list(session.query().where(file_name = twm_identificador+'.pdf'))
+
+            #twm_dt_vencimento = '18/09/2021'
             
+            
+            print('twm_conta_aglutinada', twm_conta_aglutinada)
+            print('twm_dt_vencimento', twm_dt_vencimento)
+
             query_data_vencimento = list(session.query().where(dt_vencimento = twm_dt_vencimento))
-            query_conta_aglutinada = list(session.query().where(dc_identificador_conta = twm_conta_aglutinada))
+            query_dt_e_conta =  list(session.query().where_equals('dt_vencimento', twm_dt_vencimento).and_also().where_equals('dc_identificador_conta', twm_conta_aglutinada))
+ 
             print(len(query_data_vencimento))
-            print(len(query_conta_aglutinada))
+            print(len(query_dt_e_conta))
+          
             
-            return query_conta_aglutinada        
+          
+            query_conta_aglutinada = list(session.query().where(dc_identificador_conta = twm_conta_aglutinada))
+            return query_dt_e_conta        

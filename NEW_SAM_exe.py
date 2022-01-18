@@ -11,22 +11,13 @@ from openpyxl import Workbook
 class Execute_search ():
     def __init__(self):
         print('---------------- DADOS ----------------')
+        '''
+            @twm_cliente: Escolher o cliente twm_localiza, , twm_riachuelo, twm_fleury, twm_puc
+            @mes_emissao: Escolher o mÊs pra verificar os não-saneados
+        '''
         self.twm_cliente = 'twm_localiza'
         self.mes_emissao = '202201'
         
-        if self.twm_cliente == 'twm_localiza':
-            self.cliente = 'LOCALIZA'
-        elif self.twm_cliente == 'twm_riachuelo':
-            self.cliente = 'RIACHUELO'
-        elif self.twm_cliente == 'twm_fleury':
-            self.cliente = 'FLEURY'
-        elif self.twm_cliente == 'twm_puc':
-            self.cliente = 'PUC'
-        else:
-            print('cliente não identificado: Dados iniciais')
-        
-        print(self.cliente)
-        print(self.mes_emissao)
         
         self.query_dbo_t_fatura_base = '''
                                         SELECT  *
@@ -50,7 +41,26 @@ class Execute_search ():
                                        
                                        WHERE    id_ged = 'valor_id_ged'
                                    '''
+        
+        if self.twm_cliente == 'twm_localiza':
+            self.cliente = 'LOCALIZA'
+        elif self.twm_cliente == 'twm_riachuelo':
+            self.cliente = 'RIACHUELO'
+        elif self.twm_cliente == 'twm_fleury':
+            self.cliente = 'FLEURY'
+        elif self.twm_cliente == 'twm_puc':
+            self.cliente = 'PUC'
+        else:
+            print('cliente não identificado: Dados iniciais')
+        
+        print(self.cliente)
+        print(self.mes_emissao)
+   
+    
     def string_to_float(self, valor):
+        '''
+            @valor: Usado para corrigir quando o valor vem formatado 1,110.00 alterando para o padrão do python
+        '''
         if valor == '':
             valor = float(0)
         
@@ -65,32 +75,48 @@ class Execute_search ():
             
         valor = "{:.2f}".format(valor)
         return float(valor)
+    
+    
+    
     def query_sql_start (self):
         print('----------------- SQL -----------------')
         QuerySQL_start = QuerySQL()
         QuerySQL_start.setUpsql(self.twm_cliente)
         tabela_twm = QuerySQL_start.query(self.query_dbo_t_fatura_base.replace('valor_data', self.mes_emissao))
+        self.tabela_twm = tabela_twm
         
         if len(tabela_twm.index) == 0:
             print('Aviso: Nenhuma Fatura encontrada no TWM.')    
         else:
             True
 #------------------------------FAZ UMA FATURA POR VEZ, PARA FAZER VÁRIAS ADAPTAR
-        i = 0
+        
+
+        
+        print('Faturas Não-Saneadas:', len(tabela_twm.index))
+        print(tabela_twm)
+        
+        i=0
         self.nu_fatura_base = tabela_twm.nu_fatura_base[i]
         self.id_ged = tabela_twm.id_ged[i]
         self.conta_aglutinada = tabela_twm.nu_cliente_base[i]
         self.dt_vencimento = str(tabela_twm.dt_vencimento[i]).replace('-', '')
-        
+
         tabela_id_raven = QuerySQL_start.query(self.query_t_arquivo_ged.replace('valor_id_ged', self.id_ged))      
         self.id_raven = tabela_id_raven.id_raven[i]
-       
+        print('Fatura não está no Raven <', self.conta_aglutinada,self.dt_vencimento, '>' )
+    
+        
+        
+        
         print('----------------- INFO ----------------')
         print('id_ged_no_twm:', self.id_ged)
         print('id_ged_no_raven:', self.id_raven)
         print('nu_fatura_base:', self.nu_fatura_base)
         print('conta_aglutinada:', self.conta_aglutinada)
         print('dt_vencimento:', self.dt_vencimento)
+        
+        
         
     def query_nosql_start (self):
         print('---------------- NOSQL ----------------')
@@ -109,8 +135,10 @@ class Execute_search ():
 
         query_results = QueryNOSQL_start.query(str(self.conta_aglutinada), str(self.dt_vencimento_Raven))
         
-        valor_total_fatura = query_results[0].vl_total
-        valores_faturados_auditoria = query_results[0].valores_faturados_auditoria
+        try:
+            valor_total_fatura = query_results[0].vl_total
+            valores_faturados_auditoria = query_results[0].valores_faturados_auditoria
+        except: print('Fatura não encontrada no RAVEN.')
         
         valor_total_fatura = Execute_search().string_to_float(valor_total_fatura)
         
@@ -133,6 +161,8 @@ class Execute_search ():
         self.json_parseado = query_results[0]
         self.json_parseado = json.loads(json.dumps(self.json_parseado.__dict__, ensure_ascii=False))
         
+        
+        
     def query_GED_start (self):
         print('---------------- GED ----------------')   
         fatura_ged = self.id_raven
@@ -145,6 +175,8 @@ class Execute_search ():
         print(teste, '-' , type(teste))
         bytes = pickle.dumps(teste)
         print(bytes)
+        
+        
         
     def linkado_excel (self): 
         wb = openpyxl.load_workbook('arquivo_linkado.xlsx')
@@ -213,6 +245,11 @@ class Execute_search ():
         self.linkado_fleury = json.loads(dumps(dict(zip(list_fleury_parser, list_fleury_dash)), ensure_ascii=False))
         self.linkado_puc = json.loads(dumps(dict(zip(list_puc_parser, list_puc_dash)), ensure_ascii=False))
         
+        
+        #Informações do TWM que não tem no Parser
+        print(self.tabela_twm.columns)
+        
+        
         #Escolher o arquivo utilizado de acordo com o cliente
         print(self.cliente)
         if self.cliente == 'LOCALIZA':
@@ -226,7 +263,7 @@ class Execute_search ():
         else:
             print('Erro ao identificar cliente linkado.')
             
-        #Comparar linkado com parserado e gerar o consolidado final do Json do Dash            
+        #Comparar linkado com parserado e gerar o consolidado final do Json do Dash;            
         list_indice_consolidado = []
         list_valor_consolidado = []
 
@@ -235,8 +272,32 @@ class Execute_search ():
             list_indice_consolidado.append(valor_linkado)
             
             valor_linkado = self.json_parseado.get(indice_linkado.lower(), 'N/D')
+         
+        #Procurar os valores N/D no banco do TWM(self.tabela_twm);  
+            if valor_linkado == 'N/D':
+                dict_consolidado_and_twm = {
+                                            'twm_identificador':'nu_fatura_base',
+                                            'twm_data de emissão':'dt_emissao',
+                                            'twm_nota fiscal':'nu_nota_fiscal',
+                                            'twm_fornecedor':'nu_fatura_fornecedor',
+                                            'twm_status':'ic_status',
+                                            'twm_localidade':'id_localidade'
+                                            }
+                
+                if indice_linkado.lower() in dict_consolidado_and_twm.keys():
+                    busca_coluna_twm = dict_consolidado_and_twm[indice_linkado.lower()]
+                    
+                    if busca_coluna_twm == 'nu_fatura_base':
+                        try:     valor_linkado = self.tabela_twm.nu_fatura_base[0]
+                        except:  print(busca_coluna_twm, ': Não encontrado no twm')
+                    
+                    if busca_coluna_twm == 'nu_nota_fiscal':
+                        try:     valor_linkado = self.tabela_twm.nu_nota_fiscal[0]
+                        except:  print(busca_coluna_twm, ': Não encontrado no twm')
+
             list_valor_consolidado.append(valor_linkado)
             
+
         #Consolidado final (dashboard)
         self.json_consolidado = json.loads(dumps(dict(zip(list_indice_consolidado, list_valor_consolidado)), ensure_ascii=False))
         
@@ -262,6 +323,7 @@ Execute_search_start.query_GED_start()
 Execute_search_start.query_nosql_start()
 Execute_search_start.col_parser_to_col_consolidado()
 Execute_search_start.json_parser_to_csv()
+
 
 
 
