@@ -13,6 +13,6 @@ class QueryGED():
     def get_attachmentoperation(self, entity_or_document_id, Name_fatura):
         print(Name_fatura)
         operation = GetAttachmentOperation(entity_or_document_id, Name_fatura, AttachmentType.document, None)
-        print('operation PDF:', operation)
+        #print('operation PDF:', operation)
         return operation
     

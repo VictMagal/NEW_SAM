@@ -76,45 +76,8 @@ class Execute_search ():
         valor = "{:.2f}".format(valor)
         return float(valor)
     
+
     def query_sql_start (self):
-        print('----------------- SQL -----------------')
-        QuerySQL_start = QuerySQL()
-        QuerySQL_start.setUpsql(self.twm_cliente)
-        tabela_twm = QuerySQL_start.query(self.query_dbo_t_fatura_base.replace('valor_data', self.mes_emissao))
-        self.tabela_twm = tabela_twm
-        
-        if len(tabela_twm.index) == 0:
-            print('Aviso: Nenhuma Fatura encontrada no TWM.')    
-        else:
-            True
-#------------------------------FAZ UMA FATURA POR VEZ, PARA FAZER VÁRIAS ADAPTAR
-        
-
-        
-        print('Faturas Não-Saneadas:', len(tabela_twm.index))
-        print(tabela_twm)
-        
-        i=0
-        self.nu_fatura_base = tabela_twm.nu_fatura_base[i]
-        self.id_ged = tabela_twm.id_ged[i]
-        self.conta_aglutinada = tabela_twm.nu_cliente_base[i]
-        self.dt_vencimento = str(tabela_twm.dt_vencimento[i]).replace('-', '')
-
-        tabela_id_raven = QuerySQL_start.query(self.query_t_arquivo_ged.replace('valor_id_ged', self.id_ged))      
-        self.id_raven = tabela_id_raven.id_raven[i]
-        print('Fatura não está no Raven <', self.conta_aglutinada,self.dt_vencimento, '>' )
-    
-        
-        
-        
-        print('----------------- INFO ----------------')
-        print('id_ged_no_twm:', self.id_ged)
-        print('id_ged_no_raven:', self.id_raven)
-        print('nu_fatura_base:', self.nu_fatura_base)
-        print('conta_aglutinada:', self.conta_aglutinada)
-        print('dt_vencimento:', self.dt_vencimento)
-    
-    def query_sql_start_VARIASFATURAS (self):
         print('----------------- SQL -----------------')
         QuerySQL_start = QuerySQL()
         QuerySQL_start.setUpsql(self.twm_cliente)
@@ -365,12 +328,6 @@ class Execute_search ():
 Execute_search_start = Execute_search()
 Execute_search_start.query_sql_start()
 
-#Execute_search_start.query_sql_start_VARIASFATURAS()
-
-Execute_search_start.query_GED_start()
-Execute_search_start.query_nosql_start()
-Execute_search_start.col_parser_to_col_consolidado()
-Execute_search_start.json_parser_to_csv()
 
 
 

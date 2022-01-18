@@ -14,9 +14,10 @@ class QueryNOSQL():
         # Query procurando pelo índice do banco Ex: where(informar no nome da coluna no banco, informar o valor procurado).
         with self.store.open_session() as session:
 
-            
 
-            #twm_dt_vencimento = '18/09/2021'
+            # twm_dt_vencimento = '23/09/2021'
+            # twm_conta_aglutinada = '3011263210'
+            
             
             
             print('twm_conta_aglutinada', twm_conta_aglutinada)
@@ -32,3 +33,6 @@ class QueryNOSQL():
           
             query_conta_aglutinada = list(session.query().where(dc_identificador_conta = twm_conta_aglutinada))
             return query_dt_e_conta        
+        
+
+
