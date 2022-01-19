@@ -7,6 +7,7 @@ from json import dumps
 import pandas as pd
 import pickle
 from openpyxl import Workbook
+import openpyxl
 
 class Execute_search ():
     def __init__(self):
@@ -16,7 +17,7 @@ class Execute_search ():
             @mes_emissao: Escolher o mÊs pra verificar os não-saneados
         '''
         self.twm_cliente = 'twm_localiza'
-        self.mes_emissao = '202201'
+        self.mes_emissao = '202110'
         
         
         self.query_dbo_t_fatura_base = '''
@@ -28,7 +29,7 @@ class Execute_search ():
                                                 LEFT JOIN dbo.t_valor_fatura valor_fatura ON valor_fatura.id_fatura = fatura.id_fatura_base
                                                                                              AND valor_fatura.id_campo_fatura = 4
                                         
-                                        WHERE   (valor_fatura.dc_valor_fatura = 'Não'
+                                        WHERE   (valor_fatura.dc_valor_fatura = 'Sim'
                                                   OR valor_fatura.dc_valor_fatura IS NULL
                                                 )
                                                 AND tipo_conta.id_vertical = 2
@@ -78,7 +79,6 @@ class Execute_search ():
     
 
     def query_sql_start (self):
-        print('----------------- SQL -----------------')
         QuerySQL_start = QuerySQL()
         QuerySQL_start.setUpsql(self.twm_cliente)
         tabela_twm = QuerySQL_start.query(self.query_dbo_t_fatura_base.replace('valor_data', self.mes_emissao))
@@ -115,16 +115,17 @@ class Execute_search ():
             print('Total = ', self.contador_de_faturas_total)
             try:
                 print('Executando:', self.nu_fatura_base)
+                
                 Execute_search_start.query_GED_start()
                 Execute_search_start.query_nosql_start()
                 Execute_search_start.col_parser_to_col_consolidado()
                 Execute_search_start.json_parser_to_csv()
+                
                 self.contador_de_faturas_feitas +=1 
                 
             except:
                 print('Fatura não está no Raven <', self.conta_aglutinada,self.dt_vencimento, '>' )
                 
-        
         
     def query_nosql_start (self):
         print('---------------- NOSQL ----------------')
@@ -146,7 +147,8 @@ class Execute_search ():
         try:
             valor_total_fatura = query_results[0].vl_total
             valores_faturados_auditoria = query_results[0].valores_faturados_auditoria
-        except: print('Fatura não encontrada no RAVEN.')
+        except: 
+            print('Fatura não encontrada no RAVEN.')
         
         valor_total_fatura = Execute_search().string_to_float(valor_total_fatura)
         
@@ -183,7 +185,6 @@ class Execute_search ():
         print(teste, '-' , type(teste))
         bytes = pickle.dumps(teste)
         print(bytes)
-        
         
         
     def linkado_excel (self): 
@@ -255,11 +256,11 @@ class Execute_search ():
         
         
         #Informações do TWM que não tem no Parser
-        print(self.tabela_twm.columns)
+        #print(self.tabela_twm.columns)
         
         
         #Escolher o arquivo utilizado de acordo com o cliente
-        print(self.cliente)
+        #print(self.cliente)
         if self.cliente == 'LOCALIZA':
             self.json_linkado = self.linkado_localiza
         elif self.cliente == 'RIACHUELO':
@@ -305,7 +306,6 @@ class Execute_search ():
 
             list_valor_consolidado.append(valor_linkado)
             
-
         #Consolidado final (dashboard)
         self.json_consolidado = json.loads(dumps(dict(zip(list_indice_consolidado, list_valor_consolidado)), ensure_ascii=False))
         
@@ -323,12 +323,9 @@ class Execute_search ():
         #Salva o arquivo em um Excel na pasta do código
         #df.to_excel("Consolidado_"+ self.cliente+".xlsx", sheet_name="Plan1")
         
-    
-    
 Execute_search_start = Execute_search()
 Execute_search_start.query_sql_start()
-
-
+print('################## FIM #############################')
 
 
 

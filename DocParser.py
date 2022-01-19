@@ -1,9 +1,8 @@
 import pydocparser
 
+#Login parser usando API 
 parser = pydocparser.Parser()
-
 parser.login('7a5a9bde8daf2b40e2282e7002a5bc2b689770eb')
-
 result = parser.ping()
 
 print(result)
@@ -23,6 +22,7 @@ for i in range(len(parsers)):
 print(list_energia)        
 print(len(list_energia))
 
+
 fornecedor = 'Energia_Cemig'
 
 layouts = parsers.list_parser_model_layouts(fornecedor)
@@ -31,9 +31,10 @@ print(layouts)
 print(len(layouts))
 
 
+#-----------------------------------------------Envia PDF para ser parseado -------------------------------------------------------------
 
 #path = 'TESTE_TESTE_TESTE_3011020234_20220122.pdf'
 #id = parser.upload_file_by_path(path, fornecedor) #args: file to upload, the name of the parser
-# Note that "fileone.pdf" was in the current working directory
 
+# Note that "fileone.pdf" was in the current working directory
 #data = parser.get_one_result(fornecedor, id) # The id is the doc id that was returned by `parser.upload()`

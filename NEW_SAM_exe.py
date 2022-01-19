@@ -7,6 +7,8 @@ from json import dumps
 import pandas as pd
 import pickle
 from openpyxl import Workbook
+import openpyxl
+from io import BytesIO
 
 class Execute_search ():
     def __init__(self):
@@ -89,8 +91,6 @@ class Execute_search ():
             True
 #------------------------------FAZ UMA FATURA POR VEZ, PARA FAZER VÁRIAS ADAPTAR
         
-
-        
         print('Faturas Não-Saneadas:', len(tabela_twm.index))
         print(tabela_twm)
         
@@ -102,10 +102,6 @@ class Execute_search ():
 
         tabela_id_raven = QuerySQL_start.query(self.query_t_arquivo_ged.replace('valor_id_ged', self.id_ged))      
         self.id_raven = tabela_id_raven.id_raven[i]
-        print('Fatura não está no Raven <', self.conta_aglutinada,self.dt_vencimento, '>' )
-    
-        
-        
         
         print('----------------- INFO ----------------')
         print('id_ged_no_twm:', self.id_ged)
@@ -215,11 +211,19 @@ class Execute_search ():
         Query_activeGED.setUpged()
         self.teste = Query_activeGED.get_attachmentoperation("GED", str(fatura_ged))
         
-        
+#0-------------------------------------------------Tentando retornar PDF -----------------------------        
         teste = self.teste
         print(teste, '-' , type(teste))
+        print()
         bytes = pickle.dumps(teste)
         print(bytes)
+        
+        bytesio_o = BytesIO(bytes)
+        
+        # salvar arquivo de bytes em formato .BIN
+        path = r'C:/Users/Victor Magal/Desktop/NEW_SAM/Arquivos_RavenGED_PDF/GED_PDF.bin'
+        # with open(path, "wb") as f:
+        #     f.write(bytesio_o.getbuffer())
         
         
         
