@@ -17,7 +17,7 @@ class Execute_search ():
             @mes_emissao: Escolher o mÊs pra verificar os não-saneados
         '''
         self.twm_cliente = 'twm_localiza'
-        self.mes_emissao = '202110'
+        self.mes_emissao = '202005'
         
         
         self.query_dbo_t_fatura_base = '''
