@@ -15,13 +15,15 @@ class load_arquivos:
             
 
         def ler_arquivo_fornecedor(self):
-            fornecedor = QtWidgets.QFileDialog.getOpenFileName()[0]
-            with open (fornecedor, 'r') as a:
-                self.arquivo_fornecedor = a.name
+            fornecedor = QtWidgets.QFileDialog.getOpenFileNames()[0]
             
-            print('TESTANDOOOOOOO: ', self.arquivo_fornecedor)
+            print(fornecedor)
+            print('Arquivos importados:', len(fornecedor))
             
-            self.list_fornecedor.append(fornecedor)
+            # with open (fornecedor, 'r') as a:
+            #     self.arquivo_fornecedor = a.name
+            for arquivo in fornecedor:
+                self.list_fornecedor.append(arquivo)
 
             print('Load file fornecedor complete!')
             print('list_fornecedor:', self.list_fornecedor)
@@ -168,7 +170,7 @@ class load_arquivos:
             fornecedor_x = 0 
             while fornecedor_x < len(self.list_fornecedor):
                 print("Fazendo....>> ", self.list_fornecedor[fornecedor_x])
-            #try:
+            
                 chama_SAM2 = verificação(self.list_fornecedor[fornecedor_x], self.palavra_chave, self.Cliente)
                 chama_SAM2.criar_new_sheet()
                 chama_SAM2.count_ws()
@@ -176,9 +178,7 @@ class load_arquivos:
                 chama_SAM2.count_new_ws()
                 chama_SAM2.tabela_dinâmica_new_sheet()
                 chama_SAM2.comparar_valores()
-            #except:
-                #print("Erro ao calcular >> ", self.list_fornecedor[fornecedor_x])                   
-                
+            
                 fornecedor_x+=1
             
 

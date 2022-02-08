@@ -12,11 +12,12 @@ class load_arquivos:
             
         def ler_arquivo_fornecedor(self):
             
-            fornecedor = QtWidgets.QFileDialog.getOpenFileName()[0]
-            with open (fornecedor, 'r') as a:
-                self.arquivo_fornecedor = a.name
+            fornecedor = QtWidgets.QFileDialog.getOpenFileNames()[0]
+            # with open (fornecedor, 'r') as a:
+            #     self.arquivo_fornecedor = a.name
             
-            self.list_fornecedor.append(fornecedor)
+            for arquivo in fornecedor:
+                self.list_fornecedor.append(fornecedor)
             
             print('Load file fornecedor complete!')
             print('list_fornecedor:', self.list_fornecedor)
