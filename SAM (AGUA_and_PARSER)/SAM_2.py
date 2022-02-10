@@ -136,7 +136,6 @@ class verificação():
                 if id1 != id2:
                     
                     Vl_total = "{:.2f}".format(Vl_total)
-                    
                     list_valor_total.append(float(Vl_total))
                     id2 = id1
                                 

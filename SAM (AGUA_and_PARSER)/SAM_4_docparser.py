@@ -37,7 +37,7 @@ class Parseamento_docparser():
         print()
         print('Aguarda processamento no Parser...')
         
-        for i in range (250, 0, -1):
+        for i in range (300, 0, -1):
             print(f"{i}", end="\r", flush= True)
             time.sleep(1)
             print()

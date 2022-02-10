@@ -98,10 +98,14 @@ class load_arquivos:
             if vertical == 'AGUA':  
                 self.wb_vertical = openpyxl.load_workbook('vertical_agua.xlsx')
                 self.ws_vertical = self.wb_vertical['Worksheet']
-            
+                
+                coluna_faturados = 'valores_faturados'
+                
             elif vertical == 'ENERGIA': 
                 self.wb_vertical = openpyxl.load_workbook('vertical_energia.xlsx')
                 self.ws_vertical = self.wb_vertical['Worksheet']
+                
+                coluna_faturados = 'valores_faturados_auditoria'
             
             is_data = True
             count_col_vertical = 0
@@ -110,40 +114,68 @@ class load_arquivos:
                 data =  self.ws_vertical.cell (row = 1, column = count_col_vertical).value
                 if data == None:
                     is_data = False
+            
             row_vertical = 2
-           
-            print(self.list_json_parseado)
+            # print(self.list_json_parseado)
             
             for json_parseado in self.list_json_parseado:
                 json_parseado = json_parseado[0]
-                print(json_parseado)
-                print(type(json_parseado))
-                print()
+                # print(json_parseado)
+                # print()
+                # print(coluna_faturados)
+                # print()
+                # print(json_parseado[coluna_faturados])
                 
-                for num_descricao in range(len(json_parseado['valores_faturados'])):
-                    json_valores_faturados = json_parseado['valores_faturados']
-                    json_valores_faturados = json_valores_faturados[num_descricao]
+                if type(json_parseado[coluna_faturados]) == list:
+                    quant_pdf = len(json_parseado[coluna_faturados])
+                else:
+                    quant_pdf = 1
+                
+                for num_descricao in range(quant_pdf):
+                    json_valores_faturados = json_parseado[coluna_faturados]
+                    
+                    if type(json_parseado[coluna_faturados]) == list:
+                        json_valores_faturados = json_valores_faturados[num_descricao]
                     
                     for j in range(count_col_vertical-1):
                         j+=1
                         column_vertical = self.ws_vertical.cell (row = 1, column = j).value
-                        print()
-                        print(column_vertical.lower())
-                        print()
-                        print(type(column_vertical.lower()))
                         
                         if column_vertical.lower() == 'valores_faturados valor':
                            column_vertical = 'valor'
                         
-                        if column_vertical.lower() == 'descrição serviço':
+                        if column_vertical.lower() == 'valores_faturados descricao':
                            column_vertical = 'descricao'
-                            
-                        if column_vertical.lower() in json_parseado.keys():
+                         
+                        if column_vertical.lower() == 'valores_faturados_auditoria descricao':
+                           column_vertical = 'descricao'
+                        
+                        if column_vertical.lower() == 'valores_faturados_auditoria quantidade':
+                           column_vertical = 'quantidade'
+                           
+                        if column_vertical.lower() == 'valores_faturados_auditoria tarifa preco':
+                           column_vertical = 'tarifa_preco'
+                        
+                        if column_vertical.lower() == 'valores_faturados_auditoria valor':
+                           column_vertical = 'valor'
+                           
+                        
+                        if type(json_parseado)!= None and column_vertical.lower() in json_parseado.keys():
                             valor_parseado = json_parseado[column_vertical.lower()]
+                            
+                            if vertical == 'AGUA':
+                                if column_vertical.lower() == 'valores_consumo':
+                                   json_valor = json_parseado[column_vertical.lower()]
+                                   print(json_valor)
+                                   
+                                   if type(json_valor) == list:
+                                       json_valor = json_valor[0]
+                                   
+                                   valor_parseado = json_valor['valor']
+                            
                             self.ws_vertical.cell (row = row_vertical, column = j).value = valor_parseado
-                            print(valor_parseado)
         
-                        elif column_vertical.lower() in json_valores_faturados.keys():
+                        elif type(json_valores_faturados)!= None and column_vertical.lower() in json_valores_faturados.keys():
                             print('sim:', column_vertical.lower())
                             self.ws_vertical.cell (row = row_vertical, column = j).value = valor_parseado = json_valores_faturados[column_vertical.lower()]
                     

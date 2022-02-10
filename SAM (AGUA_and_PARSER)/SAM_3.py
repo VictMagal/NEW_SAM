@@ -237,7 +237,7 @@ class consolidando_arquivos:
         indice_endereço_riachuelo = self.list_col_consolidado.index('Endereço cliente') + 1
         indice_col_CNPJ_CPFL = self.list_col_consolidado.index('CNPJ Fornecedor') + 1
         indice_col_vencimento = self.list_col_consolidado.index('Vencimento') + 1
-        
+        indice_col_identificador = self.list_col_consolidado.index('Identificador') + 1
         indice_nome_fornecedor = self.list_col_fornecedor.index('Nome_fornecedor') + 1
         self.Nome_do_fornecedor = self.ws_fornecedor.cell(row = 2, column = indice_nome_fornecedor).value
 
@@ -256,7 +256,7 @@ class consolidando_arquivos:
             list_identificador_teste.append(identificador_teste)
             
 ####################################################################################
-        
+      
         j = 0
         while j < len(self.list_col_consolidado):
             print(j, ':', self.list_col_consolidado[j])
@@ -269,11 +269,10 @@ class consolidando_arquivos:
                             if self.ws_consolidado.cell (row = i+2, column = indice_num_conta).value == self.ws_twm.cell (row =t+2, column = indice_conta_aglutinada).value:
                               self.ws_consolidado.cell (row = i+2, column = j+1).value = self.ws_twm.cell (row =t+2, column = indice_twm).value
 
-
+            
             if self.list_col_consolidado[j] == 'Categoria':
                 for i in range (self.count_row_fornecedor-1):
                     for c in range(self.count_row_categoria-1):
-                        #print(j, ':', self.list_col_consolidado[j],'----', i, '----', c)
                         if (str(self.ws_consolidado.cell (row = i+2, column = indice_desc_serviço).value)).upper() == (str(self.ws_categoria.cell (row =c+2, column = 1).value)).upper():
                             self.ws_consolidado.cell (row = i+2, column = j+1).value = self.ws_categoria.cell (row =c+2, column = 2).value
                         elif (str(self.ws_categoria.cell (row =c+2, column = 4).value)).upper() in (str(self.ws_consolidado.cell (row = i+2, column = indice_desc_serviço).value)).upper():
@@ -282,11 +281,11 @@ class consolidando_arquivos:
             elif self.list_col_consolidado[j] == 'Subcategoria':
                 for i in range (self.count_row_fornecedor-1):
                     for c in range(self.count_row_categoria-1):
-                        #print(j, ':', self.list_col_consolidado[j],'----', i, '----', c)
                         if (str(self.ws_consolidado.cell (row = i+2, column = indice_desc_serviço).value)).upper() == (str(self.ws_categoria.cell (row =c+2, column = 1).value)).upper():
                            self.ws_consolidado.cell (row = i+2, column = j+1).value = self.ws_categoria.cell (row =c+2, column = 3).value
                         elif (str(self.ws_categoria.cell (row =c+2, column = 5).value)).upper() in (str(self.ws_consolidado.cell (row = i+2, column = indice_desc_serviço).value)).upper():
                              self.ws_consolidado.cell (row = i+2, column = j+1).value = self.ws_categoria.cell (row =c+2, column = 3).value
+                indice_col_subcategoria = j + 1
             
             if self.Cliente == 'RIACHUELO':
                 if self.list_col_consolidado[j] == 'Localidade':                    
@@ -311,6 +310,35 @@ class consolidando_arquivos:
                    for i in range (self.count_row_fornecedor-1):
                        self.ws_consolidado.cell (row = i+2, column = j+1).value = self.palavra_chave[3:6]  
             j += 1
+####################################################################################
+        # Implementando TUSD vs TE na subcategoria: se tiver TUSD e não tiver TE apagar "TUSD" do campo de subcategoria
+        
+        # for i in range(2, self.count_row_fornecedor):
+        #     id1 = self.ws_consolidado.cell (row = i, column = indice_col_identificador).value
+        #     id2 = self.ws_consolidado.cell (row = i, column = indice_col_identificador).value
+            
+            
+        #     id1 = id2
+            
+        #     indice_col_identificador
+        #     indice_col_subcategoria
+            
+        #     cell_subcategoria = self.ws_consolidado.cell (row = i, column = indice_col_subcategoria).value 
+        #     self.ws_consolidado.cell (row = i, column = indice_col_subcategoria).value = cell_subcategoria.replace('TUSD', '')
+        
+              
+          
+          
+          
+          
+          
+          
+          
+####################################################################################
+
+
+
+
 
         if self.Nome_do_fornecedor == 'CPFL':
             for i in range (self.count_row_fornecedor-1):
