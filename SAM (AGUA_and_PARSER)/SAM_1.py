@@ -173,6 +173,9 @@ class load_arquivos:
                                    
                                    valor_parseado = json_valor['valor']
                             
+                            if type(valor_parseado) == list:
+                                valor_parseado = valor_parseado[0]
+                            
                             self.ws_vertical.cell (row = row_vertical, column = j).value = valor_parseado
         
                         elif type(json_valores_faturados)!= None and column_vertical.lower() in json_valores_faturados.keys():
