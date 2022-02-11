@@ -293,15 +293,15 @@ class verificação():
                 #self.wb_fornecedor.save(self.arquivo_fornecedor)
                 print('NO Save file fornecedor!!')
                 
-                # chama_SAM3 = consolidando_arquivos (self.wb_fornecedor, self.cliente, self.palavra_chave)
-                # chama_SAM3.ler_arquivo_consolidado()
-                # chama_SAM3.ler_arquivo_linkado()
-                # chama_SAM3.load_wb_Consolidado()
-                # chama_SAM3.load_wb_linkado()
-                # chama_SAM3.count_colunas()
-                # chama_SAM3.count_linhas()
-                # chama_SAM3.copia_dados()
-                # chama_SAM3.exportar_twm_categoria_localidade()
+                chama_SAM3 = consolidando_arquivos (self.wb_fornecedor, self.cliente, self.palavra_chave)
+                chama_SAM3.ler_arquivo_consolidado()
+                chama_SAM3.ler_arquivo_linkado()
+                chama_SAM3.load_wb_Consolidado()
+                chama_SAM3.load_wb_linkado()
+                chama_SAM3.count_colunas()
+                chama_SAM3.count_linhas()
+                chama_SAM3.copia_dados()
+                chama_SAM3.exportar_twm_categoria_localidade()
         
         
         

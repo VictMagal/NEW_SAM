@@ -16,8 +16,10 @@ class load_arquivos:
             # with open (fornecedor, 'r') as a:
             #     self.arquivo_fornecedor = a.name
             
-            for arquivo in fornecedor:
-                self.list_fornecedor.append(fornecedor)
+            # for arquivo in fornecedor:
+            #     self.list_fornecedor.append(fornecedor)
+            
+            self.list_fornecedor = fornecedor
             
             print('Load file fornecedor complete!')
             print('list_fornecedor:', self.list_fornecedor)

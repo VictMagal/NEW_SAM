@@ -318,12 +318,17 @@ class consolidando_arquivos:
         # list_subcategoria = []
         # count_row_tusd = 0
         # indice_tusd = 0
+        # TE = 'não_contém'
+        # TUSD = 'não_contém'
         
         # for i in range(2, self.count_row_fornecedor):
         #     id0 = self.ws_consolidado.cell (row = i-1, column = indice_col_identificador).value
         #     id1 = self.ws_consolidado.cell (row = i, column = indice_col_identificador).value
         #     cell_subcategoria = self.ws_consolidado.cell (row = i, column = indice_col_subcategoria).value
             
+        #     if cell_subcategoria == None:
+        #         cell_subcategoria = 'None'
+                
         #     if i == 2:
         #         list_id1.append(id1)
         #         list_subcategoria.append(cell_subcategoria.upper())
@@ -334,6 +339,7 @@ class consolidando_arquivos:
             
         #     else:
         #         count_row_tusd += len(list_subcategoria)
+                
         #         for subcategoria in list_subcategoria:
         #             if 'TUSD ' in subcategoria.upper():
         #                 TUSD = 'contém'
@@ -343,23 +349,28 @@ class consolidando_arquivos:
         #             if 'TE ' in subcategoria.upper(): # TE + espaço para diferenciar apenas quando for TE na ponta e TE fora ponta
         #                 TE = 'contém'
                 
-        #         if TE == 'contém' and TUSD == 'contém':
-        #             None
-        #         else:
+        #         print('TE:', TE)
+        #         print('TUSD:', TUSD)
+                
+        #         if TE == 'não_contém' and TUSD == 'contém':
         #             cell_subcategoria = self.ws_consolidado.cell (row = count_row_tusd - indice_tusd, column = indice_col_subcategoria).value
+        #             print(cell_subcategoria)
         #             self.ws_consolidado.cell (row = count_row_tusd - indice_tusd, column = indice_col_subcategoria).value = cell_subcategoria.replace('TUSD', '')
                 
+        #         print()
+        #         print(list_subcategoria)
+        #         print()
+        #         print(list_id1)
         #         list_id1 = []
         #         list_subcategoria = []
         #         list_id1.append(id1)
         #         list_subcategoria.append(cell_subcategoria)
         #         indice_tusd = 0
+        #         TE = 'não_contém'
+        #         TUSD = 'não_contém'
                 
           
 ####################################################################################
-
-
-
 
 
         if self.Nome_do_fornecedor == 'CPFL':
