@@ -239,21 +239,25 @@ class verificação():
         print('--------------')
         
         #disc_listas = dict.list_identificador
-        
-        
-        
-        
 
         dic_vltotal = dict(zip(list_identificador, list_valor_total))
         dic_auditoria = dict(zip(list_identificador, list_valor_auditoria))
         
+        count_id_errado = 0
         for i in range(len(list_identificador)):
             if dic_vltotal[list_identificador[i]] == dic_auditoria[list_identificador[i]]:    
                 None
             else:       
                 print('errado', list_identificador[i])
                 print('layout errado = ', list_layout[i])
-
+                count_id_errado += 1
+                
+        try:
+            total_id = len(list_identificador)
+            self.razao_errados = (count_id_errado/total_id)*100
+        except:
+            pass
+        
         self.soma_faturados_data = float(sum(list_valor_auditoria))
         self.soma_total_data = float(sum(list_valor_total))
         
@@ -290,6 +294,8 @@ class verificação():
                 print(self.analise)
                 print('soma_total_data', self.soma_total_data)
                 print('soma_total_faturado', self.soma_faturados_data)
+                print()
+                print('% de faturas erradas:', self.razao_errados, '%')
                 #self.wb_fornecedor.save(self.arquivo_fornecedor)
                 print('NO Save file fornecedor!!')
                 

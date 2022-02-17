@@ -57,11 +57,13 @@ class load_arquivos:
             elif self.palavra_chave[:3] == 'MRV':
                  self.Cliente = 'MRV'
                  print('Cliente = ',self.Cliente)
+                 
+            elif self.palavra_chave[:3] == 'DPS':
+                 self.Cliente = 'DPSP'
+                 print('Cliente = ',self.Cliente)
         
             else: 
                 print('Cliente não identificado!!')
-
-                
       
         def executar_SAM4(self):
             self.nova_list_fornecedor = []
@@ -178,13 +180,18 @@ class load_arquivos:
                                 if vertical == 'AGUA':
                                     if column_vertical.lower() == 'valores_consumo':
                                        json_valor = json_parseado[column_vertical.lower()]
-                                       print(json_valor)
+                                       print('json_valor=', json_valor)
+                                       print('tipo json_valor=', type(json_valor))
                                        
                                        if type(json_valor) == list:
                                            json_valor = json_valor[0]
                                       
                                        if json_valor == None:
                                            valor_parseado = 0
+                                       
+                                       elif type(json_valor) == int or type(json_valor) == float or type(json_valor) == str:
+                                           valor_parseado = json_valor
+                                       
                                        else:
                                            valor_parseado = json_valor['valor']
                                 

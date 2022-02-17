@@ -43,6 +43,10 @@ class consolidando_arquivos:
             self.arquivo_consolidado = 'arquivo_consolidado_PAGUE_MENOS.xlsx'
             print('Load file consolidado complete!')
             
+        elif self.Cliente == 'DPSP':
+            self.arquivo_consolidado = 'arquivo_consolidado_DPSP.xlsx'
+            print('Load file consolidado complete!')
+            
         else: 
             print('Arquivo consolidado não encontrado!!!')
             self.arquivo_consolidado = None
@@ -70,6 +74,10 @@ class consolidando_arquivos:
         
         elif self.Cliente == 'PAGUE_MENOS':
             self.arquivo_linkado = 'arquivo_linkado_PAGUE_MENOS.xlsx'
+            print('Load file linkado complete!')
+        
+        elif self.Cliente == 'DPSP':
+            self.arquivo_linkado = 'arquivo_linkado_DPSP.xlsx'
             print('Load file linkado complete!')
         
         else: 
@@ -358,15 +366,18 @@ class consolidando_arquivos:
                         if 'TE ' in subcategoria.upper(): # TE + espaço para diferenciar apenas quando for TE na ponta e TE fora ponta
                             TE = 'contém'
                     
+                    print()
+                    print(id1)
                     print('TE:', TE)
                     print('TUSD:', TUSD)
+                    print()
                     
                     if TE == 'não_contém' and TUSD == 'contém':
                         cell_subcategoria = self.ws_consolidado.cell (row = count_row_tusd - indice_tusd, column = indice_col_subcategoria).value
                         print('--------begin-------')
                         print(cell_subcategoria)
-                        print()
                         print(list_subcategoria)
+                        print(id1)
                         print('--------end-------')
                         self.ws_consolidado.cell (row = count_row_tusd - indice_tusd, column = indice_col_subcategoria).value = cell_subcategoria.replace('TUSD', '')
             
@@ -380,25 +391,21 @@ class consolidando_arquivos:
                 for subcategoria in list_subcategoria:
                     if 'TE ' in subcategoria.upper(): # TE + espaço para diferenciar apenas quando for TE na ponta e TE fora ponta
                         TE = 'contém'
-                
+                print()
+                print(id1)
                 print('TE:', TE)
                 print('TUSD:', TUSD)
+                print()
                 
                 if TE == 'não_contém' and TUSD == 'contém':
                     cell_subcategoria = self.ws_consolidado.cell (row = count_row_tusd - indice_tusd, column = indice_col_subcategoria).value
                     print('--------begin-------')
                     print(cell_subcategoria)
-                    print()
                     print(list_subcategoria)
+                    print(id1)
                     print('--------end-------')
                     self.ws_consolidado.cell (row = count_row_tusd - indice_tusd, column = indice_col_subcategoria).value = cell_subcategoria.replace('TUSD', '')
                 
-                print()
-                print('-----')
-                print(list_subcategoria)
-                print()
-                print(list_id1)
-                print('-----')
                 list_id1 = []
                 list_subcategoria = []
                 list_id1.append(id1)
@@ -407,10 +414,6 @@ class consolidando_arquivos:
                 
                 TE = 'não_contém'
                 TUSD = 'não_contém'
-            
-            print('-----')
-            print(i)
-            print('-----')
 ####################################################################################
 
 
@@ -421,12 +424,6 @@ class consolidando_arquivos:
         self.wb_consolidado.save('______consolidado_' + self.Cliente + '_' + self.Nome_do_fornecedor+'.xlsx')
         print('Save file >>>>>', '______consolidado_' + self.Cliente + '_' + self.Nome_do_fornecedor+'.xlsx')
         
-        
-        try:
-          print('Valindando consumo...')
-          consolidando_arquivos.validar_consumo(self)
-        except:
-            print('Valor consumo não pode ser avaliado!')
 
     def validar_consumo(self):
         j = 0

@@ -6,18 +6,24 @@ class Banco_nosql_raven_ged():
     def __init__(self):
         urls = "https://a.rdbguiando.ravendb.community"
         cert = {"pfx": "C:/Users/Victor Magal/Downloads/Raven/victormagalhaes.client.certificate/victormagalhaes.client.certificate.pfx", "password": "#YpzIf&t3dby"}
-        store =  document_store.DocumentStore(urls=urls, database="GED", certificate=cert)
-        store.initialize()
+        self.store =  document_store.DocumentStore(urls=urls, database="GED", certificate=cert)
+        self.store.initialize()
         
             
-    def get_attachmentoperation(self, id_ged):
-        operation = GetAttachmentOperation("GED", id_ged, AttachmentType.document, None)
+    def get_attachmentoperation(self, id_ged, identificador_pdf):
         
+        operation = self.store.operations.send(GetAttachmentOperation(id_ged, identificador_pdf, AttachmentType.document, None))
+        print(operation)
+        print()
+        
+        # with self.store.open_session() as session:
+        #     download = session.advanced.attachment.get(id_ged, identificador_pdf)
+        # print(download[0])
+
         return operation
 
 active_Banco_nosql_raven_ged = Banco_nosql_raven_ged()
-documento = active_Banco_nosql_raven_ged.get_attachmentoperation("GEDFileDocuments/6170851-A")
+documento = active_Banco_nosql_raven_ged.get_attachmentoperation("GEDFileDocuments/162177-A", '98641473_180610.pdf')
 
-print(documento)
 
 
