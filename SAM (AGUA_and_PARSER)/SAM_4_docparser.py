@@ -1,5 +1,6 @@
 import pydocparser
-import time
+from time import sleep
+from tqdm import tqdm
 
 class Parseamento_docparser():
     def __init__(self, fornecedor, list_arquivo_pdf):
@@ -19,6 +20,17 @@ class Parseamento_docparser():
         self.fornecedor = fornecedor
         self.list_arquivo_pdf = list_arquivo_pdf
         
+        # parsers = self.parser.list_parsers()
+        # lista = [i['label'] for i in parsers]
+        # lista_agua = []
+        # lista_energia = []
+        # for i in lista:
+        #     if 'Agua' in i:
+        #         lista_agua.append(i)
+        # for i in lista:
+        #     if 'Energia' in i:
+        #         lista_energia.append(i)
+        
         #-----------------------------------------------Envia PDF para ser parseado -------------------------------------------------------------
     def importar_pdf(self):
         list_data = []
@@ -30,17 +42,12 @@ class Parseamento_docparser():
         for path in list_path:
             id = self.parser.upload_file_by_path(path, fornecedor) #args: file to upload, the name of the parser
             list_id.append(id)
-        
-        len_list_id = len(list_id)
-        len_list_path = len(list_path)
 
         print()
         print('Aguarda processamento no Parser...')
         
-        for i in range (300, 0, -1):
-            print(f"{i}", end="\r", flush= True)
-            time.sleep(1)
-            print()
+        for _ in tqdm(range(300)):
+            sleep(1)
 
         for id in list_id:
             #Note that "fileone.pdf" was in the current working directory
@@ -49,3 +56,4 @@ class Parseamento_docparser():
      
                 
         return list_data
+Parseamento_docparser(1,2)

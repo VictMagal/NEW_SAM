@@ -344,16 +344,10 @@ class consolidando_arquivos:
             if i == 2:
                 list_id1.append(id1)
                 list_subcategoria.append(cell_subcategoria.upper())
-                print('-----')
-                print('i==2')
-                print('-----')
             
             elif id1 == id0:
                 list_id1.append(id1)
                 list_subcategoria.append(cell_subcategoria.upper())
-                print('-----')
-                print(id1, '==', id0)
-                print('-----')
                 
                 if i == self.count_row_fornecedor - 1:
                     count_row_tusd += len(list_subcategoria)
