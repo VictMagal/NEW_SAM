@@ -51,7 +51,8 @@ class Parseamento_docparser():
 
         for id in list_id:
             #Note that "fileone.pdf" was in the current working directory
-            data = self.parser.get_one_result(fornecedor, id) # The id is the doc id that was returned by `parser.upload()`    
+            data = self.parser.get_one_result(fornecedor, id) # The id is the doc id that was returned by `parser.upload()`  
+            print(data)
             list_data.append(data)
      
                 
