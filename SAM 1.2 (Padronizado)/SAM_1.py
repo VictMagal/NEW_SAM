@@ -26,8 +26,7 @@ class load_arquivos:
                 self.list_fornecedor.append(arquivo)
 
             print('Load file fornecedor complete!')
-            print('list_fornecedor:', self.list_fornecedor)
-            
+           
 
         def Identificar_Cliente(self):
             if self.palavra_chave[:3] == 'PUC':
@@ -115,7 +114,6 @@ class load_arquivos:
                     is_data = False
             
             row_vertical = 2
-            print(self.list_json_parseado)
             
             for json_parseado in self.list_json_parseado:
                 json_parseado = json_parseado[0]
@@ -133,7 +131,6 @@ class load_arquivos:
                     if type(json_parseado[coluna_faturados]) == list:
                         json_valores_faturados = json_valores_faturados[num_descricao]
                     
-                    print(json_valores_faturados)
                     for j in range(count_col_vertical-1):
                         j+=1
                         column_vertical = self.ws_vertical.cell (row = 1, column = j).value
@@ -176,8 +173,6 @@ class load_arquivos:
                                 if vertical == 'AGUA':
                                     if column_vertical.lower() == 'valores_consumo':
                                        json_valor = json_parseado[column_vertical.lower()]
-                                       print('json_valor=', json_valor)
-                                       print('tipo json_valor=', type(json_valor))
                                        
                                        if type(json_valor) == list:
                                            json_valor = json_valor[0]
@@ -197,7 +192,6 @@ class load_arquivos:
                                 self.ws_vertical.cell (row = row_vertical, column = j).value = valor_parseado
 
                         elif column_vertical.lower() in json_valores_faturados.keys():
-                                print('sim:', column_vertical.lower())
                                 
                                 valor_faturado = json_valores_faturados[column_vertical.lower()]
                                 

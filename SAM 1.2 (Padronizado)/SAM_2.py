@@ -292,7 +292,7 @@ class verificação():
                 print('soma_total_data', self.soma_total_data)
                 print('soma_total_faturado', self.soma_faturados_data)
                 print()
-                print('% de faturas certas:', self.razao_errados, '%')
+                print('% de faturas certas:', f'{self.razao_errados:.2f}', '%')
                 print('NO Save file fornecedor!!')
                 
                 chama_SAM3 = consolidando_arquivos (self.wb_fornecedor, self.cliente, self.palavra_chave)

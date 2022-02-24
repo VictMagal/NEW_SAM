@@ -33,15 +33,7 @@ class consolidando_arquivos:
         
         ws_consolidado = wb_consolidado[f'{nome_ws_consolidado_cliente}']
         ws_consolidado.title = 'Worksheet'
-        # sheets_names = wb_consolidado.sheetnames
-        # for name in sheets_names:
-        #     if ws_consolidado != name:
-        #         wb_consolidado.remove(wb_consolidado.get_sheet_by_name(f'{name}'))
-        
-        
-    
-    #  except:
-   #     print('Planilha do cliente consolidado não encontrada!!!')
+       
         
         self.wb_consolidado = wb_consolidado
         self.ws_consolidado = ws_consolidado
@@ -288,79 +280,84 @@ class consolidando_arquivos:
 
 ####################################################################################
         # Implementando TUSD vs TE na subcategoria: se tiver TUSD e não tiver TE apagar "TUSD" do campo de subcategoria
-        
-        list_id1 = []
-        list_subcategoria = []
-        count_row_tusd = 0
-        indice_tusd = 0
-        TE = 'não_contém'
-        TUSD = 'não_contém'
-        
-        for i in range(2, self.count_row_fornecedor):
-            id0 = self.ws_consolidado.cell (row = i-1, column = indice_col_identificador).value
-            id1 = self.ws_consolidado.cell (row = i, column = indice_col_identificador).value
-
-            cell_subcategoria = self.ws_consolidado.cell (row = i, column = indice_col_subcategoria).value
+        try:
+            list_id1 = []
+            list_subcategoria = []
+            TE = 'não_contém'
+            TUSD = 'não_contém'
             
-            if cell_subcategoria == None:
-                cell_subcategoria = 'None'
+            i = 2
+            while i <= self.count_row_fornecedor + 1:
                 
-            if i == 2:
-                list_id1.append(id1)
-                list_subcategoria.append(cell_subcategoria.upper())
-            
-            elif id1 == id0:
-                list_id1.append(id1)
-                list_subcategoria.append(cell_subcategoria.upper())
+                id0 = self.ws_consolidado.cell (row = i-1, column = indice_col_identificador).value
+                id1 = self.ws_consolidado.cell (row = i, column = indice_col_identificador).value
                 
-                if i == self.count_row_fornecedor - 1:
-                    count_row_tusd += len(list_subcategoria)
-                    for subcategoria in list_subcategoria:
-                        if 'TUSD ' in subcategoria.upper():
-                            TUSD = 'contém'
-                            indice_tusd = list_subcategoria.index(subcategoria) + 1
-                            
-                    for subcategoria in list_subcategoria:
-                        if 'TE ' in subcategoria.upper(): # TE + espaço para diferenciar apenas quando for TE na ponta e TE fora ponta
-                            TE = 'contém'
+                cell_subcategoria = self.ws_consolidado.cell (row = i, column = indice_col_subcategoria).value
+                
+                if cell_subcategoria == None:
+                    cell_subcategoria = 'None'
                     
-                    if TE == 'não_contém' and TUSD == 'contém':
-                        cell_subcategoria = self.ws_consolidado.cell (row = count_row_tusd - indice_tusd, column = indice_col_subcategoria).value
-                        print('--------begin-------')
-                        print(cell_subcategoria)
-                        print(list_subcategoria)
-                        print(id1)
-                        print('--------end-------')
-                        self.ws_consolidado.cell (row = count_row_tusd - indice_tusd, column = indice_col_subcategoria).value = cell_subcategoria.replace('TUSD', '')
-            
-            else:
-                count_row_tusd += len(list_subcategoria)
-                for subcategoria in list_subcategoria:
-                    if 'TUSD ' in subcategoria.upper():
-                        TUSD = 'contém'
-                        indice_tusd = list_subcategoria.index(subcategoria) + 1
+                if i == 2:
+                    list_id1.append(id1)
+                    list_subcategoria.append(cell_subcategoria.upper())
+                    
+                    i+=1
+                    
+                elif id1 == id0:
+                    list_id1.append(id1)
+                    list_subcategoria.append(cell_subcategoria.upper())
+                    
+                    i+=1
                         
-                for subcategoria in list_subcategoria:
-                    if 'TE ' in subcategoria.upper(): # TE + espaço para diferenciar apenas quando for TE na ponta e TE fora ponta
-                        TE = 'contém'
-                
-                if TE == 'não_contém' and TUSD == 'contém':
-                    cell_subcategoria = self.ws_consolidado.cell (row = count_row_tusd - indice_tusd, column = indice_col_subcategoria).value
-                    print('--------begin-------')
-                    print(cell_subcategoria)
-                    print(list_subcategoria)
-                    print(id1)
-                    print('--------end-------')
-                    self.ws_consolidado.cell (row = count_row_tusd - indice_tusd, column = indice_col_subcategoria).value = cell_subcategoria.replace('TUSD', '')
-                
-                list_id1 = []
-                list_subcategoria = []
-                list_id1.append(id1)
-                list_subcategoria.append(cell_subcategoria)
-                indice_tusd = 0
-                
-                TE = 'não_contém'
-                TUSD = 'não_contém'
+                else:
+                    for subcategoria in list_subcategoria:
+                        try:
+                            if 'TE ' in subcategoria.upper(): # TE + espaço para diferenciar apenas quando for TE na ponta e TE fora ponta
+                                TE = 'contém'
+                        except:
+                            print("NoneType object has no attribute")
+                    
+                    for subcategoria in list_subcategoria:
+                        try:
+                            if 'TUSD ' in subcategoria.upper():
+                                TUSD = 'contém'
+                                index_tusd_por_id = len(list_subcategoria) - list_subcategoria.index(subcategoria)
+                                
+                                if TE == 'não_contém' and TUSD == 'contém':
+                                    try:
+                                        #print('------Com TUSD sem TE-------')
+                                        linha_tusd = i - index_tusd_por_id
+                                        cell_subcategoria = self.ws_consolidado.cell (row = linha_tusd, column = indice_col_subcategoria).value
+                                        self.ws_consolidado.cell (row = linha_tusd, column = indice_col_subcategoria).value = cell_subcategoria.replace('TUSD', '')
+                                        # print('cell_subcategoria:', cell_subcategoria)
+                                        # print('list_subcategoria:', list_subcategoria)
+                                        # print('list_id1:', list_id1)
+                                        # print('i:', i)
+                                        # print('index_tusd_por_id:', index_tusd_por_id)
+                                        # print('linha_tusd:', linha_tusd)
+                                        
+                                    except:
+                                        print("NoneType subcategoria no attribute 'replace'")
+                                        
+                        except:
+                            print("NoneType object has no attribute")
+                    
+                    list_id1 = []
+                    list_subcategoria = []
+                    list_id1.append(id1)
+                    list_subcategoria.append(cell_subcategoria)
+                    
+                    TE = 'não_contém'
+                    TUSD = 'não_contém'
+                    
+                    if i == self.count_row_fornecedor + 1:
+                        break
+                    
+                    i+=1
+                      
+        except:
+            print("Não foi possível implementar a regra de TUSD/TE, é preciso verificar manualmente na planilha.")
+            
 ####################################################################################
         if self.Nome_do_fornecedor == 'CPFL':
             for i in range (self.count_row_fornecedor-1):
