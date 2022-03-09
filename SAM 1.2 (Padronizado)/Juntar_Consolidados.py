@@ -13,12 +13,6 @@ class load_arquivos:
         def ler_arquivo_fornecedor(self):
             
             fornecedor = QtWidgets.QFileDialog.getOpenFileNames()[0]
-            # with open (fornecedor, 'r') as a:
-            #     self.arquivo_fornecedor = a.name
-            
-            # for arquivo in fornecedor:
-            #     self.list_fornecedor.append(fornecedor)
-            
             self.list_fornecedor = fornecedor
             
             print('Load file fornecedor complete!')
@@ -57,12 +51,48 @@ class load_arquivos:
                         self.ws_new.cell(row=ultima_linha_ws_new+i+1, column= j+1).value = self.ws.cell(row=i+2,column=j+1).value
                 ultima_linha_ws_new += count_row_ws-1
                 k+=1
+            
+            load_arquivos.excel_atualizador(self)
+            
 
-            self.wb_new.save('_____CONSOLIDADO_COMPLETO.xlsx')
+        def excel_atualizador(self):
+            cliente = tela.lineEdit.text()
+            banco = tela.lineEdit_2.text()
+            
+            wb_twm = openpyxl.load_workbook('./arquivo_twm/arquivo_'+cliente.upper()+'.xlsx')
+            wb_atualizador = openpyxl.load_workbook('./arquivo_cliente/Modelo_Campo_Customizado.xlsx')
+            
+            ws_atualizador_dados = wb_atualizador ['Dados Cliente']
+            ws_atualizador_fatura = wb_atualizador ['Fatura']
+            ws_twm = wb_twm ['Planilha1']
+            
+            ws_atualizador_dados.cell(row = 2, column = 1).value = banco
+            
+            is_data = True
+            count_row_ws = 1
+            while is_data:
+                count_row_ws += 1
+                data =  ws_twm.cell (row = count_row_ws, column = 1).value
+                if data == None:
+                    is_data = False
+            count_row_ws -=1
+
+            i = 2
+            while i <= count_row_ws:
+                ws_atualizador_fatura.cell(row = i, column = 1).value = ws_twm.cell (row = i, column = 1).value
+                ws_atualizador_fatura.cell(row = i, column = 2).value = 'Saneado'
+                ws_atualizador_fatura.cell(row = i, column = 3).value = 'Sim'
+             
+                i += 1
+            
+            self.wb_new.save('_____CONSOLIDADO_COMPLETO'+banco+'.xlsx')
             print('Complete!!')
+            
+            wb_atualizador.save('__Modelo_Campo_Customizado_'+banco+'.xlsx')
+            print('__Modelo_Campo_Customizado_'+banco+'.xlsx complete!!!')
 
 app = QtWidgets.QApplication([])
-tela = uic.loadUi("Interface_SAM.ui")
+tela = uic.loadUi("./assets/Interface_SAM.ui")
 
 tela.show()
 

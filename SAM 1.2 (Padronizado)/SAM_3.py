@@ -233,17 +233,26 @@ class consolidando_arquivos:
                 
                 for i in range (self.count_row_fornecedor-1):
                       for t in range (self.count_row_twm-1):          
-                            if self.ws_consolidado.cell (row = i+2, column = indice_num_conta).value == self.ws_twm.cell (row =t+2, column = indice_conta_aglutinada).value:
-                              self.ws_consolidado.cell (row = i+2, column = j+1).value = self.ws_twm.cell (row =t+2, column = indice_twm).value
-
-            
+                            if self.ws_consolidado.cell (row = i+2, column = indice_num_conta).value == self.ws_twm.cell (row = t+2, column = indice_conta_aglutinada).value:
+                              self.ws_consolidado.cell (row = i+2, column = j+1).value = self.ws_twm.cell (row = t+2, column = indice_twm).value
+                              
             if self.list_col_consolidado[j] == 'Categoria':
+                
                 for i in range (self.count_row_fornecedor-1):
                     for c in range(self.count_row_categoria-1):
                         if (str(self.ws_consolidado.cell (row = i+2, column = indice_desc_serviço).value)).upper() == (str(self.ws_categoria.cell (row =c+2, column = 1).value)).upper():
                             self.ws_consolidado.cell (row = i+2, column = j+1).value = self.ws_categoria.cell (row =c+2, column = 2).value
-                        # elif (str(self.ws_categoria.cell (row =c+2, column = 4).value)).upper() in (str(self.ws_consolidado.cell (row = i+2, column = indice_desc_serviço).value)).upper():
-                        #       self.ws_consolidado.cell (row = i+2, column = j+1).value = self.ws_categoria.cell (row =c+2, column = 2).value
+                
+                try:
+                   if self.Cliente == 'PAGUE_MENOS:':
+                        for i in range (self.count_row_fornecedor-1):
+                            for c in range(self.count_row_categoria-1):
+                                if  'AGUA' in (str(self.ws_categoria.cell (row =c+2, column = 1).value)).upper() or 'ÁGUA' in (str(self.ws_categoria.cell (row =c+2, column = 1).value)).upper():
+                                    self.ws_consolidado.cell (row = i+2, column = j+1).value = 'Consumo Água'  
+                                # elif 'ESGOTO' in (str(self.ws_categoria.cell (row =c+2, column = 1).value)).upper():
+                                #         self.ws_consolidado.cell (row = i+2, column = j+1).value = 'Consumo Esgoto'
+                except:
+                     pass
 
             elif self.list_col_consolidado[j] == 'Subcategoria':
                 for i in range (self.count_row_fornecedor-1):
@@ -325,16 +334,10 @@ class consolidando_arquivos:
                                 
                                 if TE == 'não_contém' and TUSD == 'contém':
                                     try:
-                                        #print('------Com TUSD sem TE-------')
                                         linha_tusd = i - index_tusd_por_id
                                         cell_subcategoria = self.ws_consolidado.cell (row = linha_tusd, column = indice_col_subcategoria).value
                                         self.ws_consolidado.cell (row = linha_tusd, column = indice_col_subcategoria).value = cell_subcategoria.replace('TUSD', '')
-                                        # print('cell_subcategoria:', cell_subcategoria)
-                                        # print('list_subcategoria:', list_subcategoria)
-                                        # print('list_id1:', list_id1)
-                                        # print('i:', i)
-                                        # print('index_tusd_por_id:', index_tusd_por_id)
-                                        # print('linha_tusd:', linha_tusd)
+                                
                                         
                                     except:
                                         print("NoneType subcategoria no attribute 'replace'")
@@ -363,6 +366,6 @@ class consolidando_arquivos:
             for i in range (self.count_row_fornecedor-1):
                 self.ws_consolidado.cell (row = i+2, column = indice_col_CNPJ_CPFL).value = '04.172.213/0001-51'
         
-        self.wb_consolidado.save('______consolidado_' + self.Cliente + '_' + self.Nome_do_fornecedor+'.xlsx')
-        print('Save file >>>>>', '______consolidado_' + self.Cliente + '_' + self.Nome_do_fornecedor+'.xlsx')
+        self.wb_consolidado.save(r'______consolidado_' + self.Cliente + '_' + self.Nome_do_fornecedor+'.xlsx')
+        print(r'Save file >>>>>', '______consolidado_' + self.Cliente + '_' + self.Nome_do_fornecedor+'.xlsx')
         
