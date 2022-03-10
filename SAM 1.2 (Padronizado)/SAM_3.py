@@ -226,7 +226,7 @@ class consolidando_arquivos:
       
         j = 0
         while j < len(self.list_col_consolidado):
-            print(j, ':', self.list_col_consolidado[j])
+            #print(j, ':', self.list_col_consolidado[j])
 
             if self.list_col_consolidado[j] in list_col_twm:
                 indice_twm = list_col_twm.index(self.list_col_consolidado[j]) + 1                

@@ -18,10 +18,9 @@ class load_arquivos:
 
         def ler_arquivo_fornecedor(self):
             fornecedor = QtWidgets.QFileDialog.getOpenFileNames()[0]
-            
-            print(fornecedor)
+            #print(fornecedor)
             print('Arquivos importados:', len(fornecedor))
-           
+            
             for arquivo in fornecedor:
                 self.list_fornecedor.append(arquivo)
 
