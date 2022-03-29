@@ -1,5 +1,5 @@
 import openpyxl
-from datetime import datetime
+# from datetime import datetime
 
 class consolidando_arquivos:
     def __init__(self, wb_fornecedor, Cliente, palavra_chave):
@@ -17,6 +17,7 @@ class consolidando_arquivos:
             self.ws_twm = self.wb_twm['faturas']
         
         self.wb_categoria = openpyxl.load_workbook('./arquivo_cliente/Categorias_Subcategoria.xlsx')
+        
         self.ws_categoria = self.wb_categoria['Categorias']
         
         self.wb_localidade_riachuelo = openpyxl.load_workbook('./arquivo_cliente/Localidades_RIACHUELO.xlsx')
@@ -193,18 +194,18 @@ class consolidando_arquivos:
         self.list_col_twm = list_col_twm
         
         try: #Dados do TWM
-            indice_conta_aglutinada = list_col_twm.index('Conta aglutinada') + 1
+            #indice_conta_aglutinada = list_col_twm.index('Conta aglutinada') + 1
             indice_col_identificador = self.list_col_consolidado.index('Identificador') + 1
-            indice_num_conta = self.list_col_consolidado.index('Nº da Conta') + 1 
+            #indice_num_conta = self.list_col_consolidado.index('Nº da Conta') + 1 
         except: # Dados do NEXinvoice
-            indice_conta_aglutinada = list_col_twm.index('CONTRATO') + 1
+            #indice_conta_aglutinada = list_col_twm.index('CONTRATO') + 1
             indice_col_identificador = self.list_col_consolidado.index('FATURA') + 1
-            indice_num_conta = self.list_col_consolidado.index('CONTRATO') + 1 
+            #indice_num_conta = self.list_col_consolidado.index('CONTRATO') + 1 
             
         indice_desc_serviço = self.list_col_consolidado.index('Descrição Serviço') + 1  
         indice_endereço_riachuelo = self.list_col_consolidado.index('Endereço cliente') + 1
         indice_col_CNPJ_CPFL = self.list_col_consolidado.index('CNPJ Fornecedor') + 1
-        indice_col_vencimento = self.list_col_consolidado.index('Vencimento') + 1
+        #indice_col_vencimento = self.list_col_consolidado.index('Vencimento') + 1
         indice_nome_fornecedor = self.list_col_fornecedor.index('Nome_fornecedor') + 1
         
         self.Nome_do_fornecedor = self.ws_fornecedor.cell(row = 2, column = indice_nome_fornecedor).value

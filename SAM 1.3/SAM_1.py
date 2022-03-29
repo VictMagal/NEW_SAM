@@ -53,6 +53,10 @@ class load_arquivos:
             elif self.palavra_chave[:3] == 'DPS':
                  self.Cliente = 'DPSP'
                  print('Cliente = ',self.Cliente)
+            
+            elif self.palavra_chave[:3] == 'GRP':
+                 self.Cliente = 'GRPCOM'
+                 print('Cliente = ',self.Cliente)
         
             else: 
                 print('Cliente não identificado!!')
